@@ -9,8 +9,8 @@
         :root {
             --bg-color: #fff9f0; /* 溫暖的奶油白 */
             --text-color: #5a4a42; /* 溫暖的深棕色 */
-            --accent-color: #9ab8b3; /* 青澀感的灰綠色 */
-            --hover-color: #e8b4b8; /* 可愛粉 */
+            --accent-color: #9ab8b3; /* 青澀感的灰綠色 (追人的顏色) */
+            --hover-color: #e8b4b8; /* 可愛粉 (被追的顏色) */
         }
 
         /* 強制所有元素都使用可愛字體 */
@@ -29,10 +29,10 @@
             min-height: 100vh;
         }
 
-        /* --- 兩個小人追逐動畫 --- */
+        /* --- 兩個小人 SVG 追逐動畫 --- */
         .chasing-container {
             position: fixed;
-            bottom: 10px;
+            bottom: 15px; /* 稍微提高一點 */
             left: 0;
             width: 100%;
             height: 60px;
@@ -41,53 +41,51 @@
             overflow: hidden;
         }
 
-        /* 定義小人的樣子 (用CSS畫的簡單人偶) */
-        .character {
+        /* 移動容器：負責從左跑到右 */
+        .mover {
             position: absolute;
             bottom: 0;
-            width: 30px;
-            height: 50px;
-        }
-        
-        .character::before { /* 頭 */
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+            animation: moveAcross 18s linear infinite;
         }
 
-        .character::after { /* 身體 */
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
-            border-radius: 50% 50% 0 0;
+        /* 彈跳元素：負責上下蹦跳，裡面的SVG負責顯示圖案 */
+        .bouncer {
+            width: 45px; /* 角色大小 */
+            height: 45px;
+            animation: bounce 0.6s ease-in-out infinite alternate;
         }
 
-        /* 第一個小人 (被追的) */
-        .char-1 {
-            left: -50px;
-            animation: chase 15s linear infinite;
+        /* 第一個小人 (被追的 - 粉色) */
+        .mover-1 {
+            left: -60px;
+            /* 延遲一點點開始，錯開位置 */
+             animation-delay: 0s;
         }
-        .char-1::before, .char-1::after { background-color: var(--hover-color); } /* 粉色 */
-
-        /* 第二個小人 (追人的) */
-        .char-2 {
-            left: -120px; /* 起始位置在更左邊 */
-            animation: chase 15s linear infinite;
+        .mover-1 .bouncer {
+            fill: var(--hover-color); /* SVG填色 */
+            animation-delay: 0.1s; /* 蹦跳錯開 */
         }
-        .char-2::before, .char-2::after { background-color: var(--accent-color); } /* 藍色 */
 
-        @keyframes chase {
+        /* 第二個小人 (追人的 - 藍綠色) */
+        .mover-2 {
+            left: -140px; /* 起始位置在更後面 */
+            animation-delay: 0.2s;
+        }
+        .mover-2 .bouncer {
+            fill: var(--accent-color); /* SVG填色 */
+            animation-delay: 0.3s;
+        }
+
+        /* 橫向移動動畫 */
+        @keyframes moveAcross {
             0% { transform: translateX(0); }
             100% { transform: translateX(110vw); } /* 跑到螢幕外 */
+        }
+
+        /* 上下蹦跳動畫 */
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-12px); } /* 向上跳12px */
         }
         /* ----------------------- */
 
@@ -203,8 +201,16 @@
 </head>
 <body>
     <div class="chasing-container">
-        <div class="character char-1"></div>
-        <div class="character char-2"></div>
+        <div class="mover mover-1">
+            <svg class="bouncer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C13.6569 2 15 3.34315 15 5C15 6.65685 13.6569 8 12 8C10.3431 8 9 6.65685 9 5C9 3.34315 10.3431 2 12 2ZM12 10C15.9706 10 19.2379 12.8638 19.8941 16.637L20.1115 18H16.8001C16.3431 20.3157 14.378 22 12 22C9.62202 22 7.65687 20.3157 7.19992 18H3.88853L4.10593 16.637C4.76212 12.8638 8.02944 10 12 10Z"/>
+            </svg>
+        </div>
+        <div class="mover mover-2">
+            <svg class="bouncer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.5 6C7.5 8.48528 9.51472 10.5 12 10.5C14.4853 10.5 16.5 8.48528 16.5 6C16.5 3.51472 14.4853 1.5 12 1.5C9.51472 1.5 7.5 3.51472 7.5 6ZM19.799 18.3934L20.8437 20.4828C21.1865 21.1685 20.9085 22.002 20.2228 22.3448C20.0318 22.4403 19.8211 22.4913 19.6075 22.4956L4.33474 22.4999C3.56817 22.5001 2.94652 21.8787 2.94631 21.1122C2.9463 20.9018 2.99628 20.6943 3.09099 20.5048L4.08529 18.5162C4.76087 15.0539 7.81301 12.5 11.3451 12.5H12.608C16.1656 12.5 19.233 15.0907 19.799 18.3934Z"/>
+            </svg>
+        </div>
     </div>
 
     <div class="container">
