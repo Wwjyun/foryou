@@ -71,7 +71,6 @@
             position: relative;
         }
 
-        /* 調整 Hero 區域高度，容納照片 */
         .hero {
             min-height: 70vh;
             display: flex;
@@ -82,27 +81,31 @@
             padding-top: 20px;
         }
 
-        /* --- 照片樣式 --- */
+        /* --- 照片樣式 (改回圓形 + 裁切調整) --- */
         .profile-img-container {
-            width: 180px; /* 設定照片大小 */
+            width: 180px;
             height: 180px;
-            margin: 0 auto 30px auto; /* 上下留白，置中 */
-            border-radius: 50%; /* 變圓形 */
-            overflow: hidden; /* 超出部分隱藏 */
-            border: 3px solid var(--bg-color); /* 內圈白邊 */
-            box-shadow: 0 8px 20px rgba(140, 157, 163, 0.3), /* 柔和陰影 */
-                        0 0 0 2px var(--accent-color); /* 外圈細線框 */
-            opacity: 0; /* 一開始隱藏 */
+            margin: 0 auto 30px auto;
+            border-radius: 50%; /* 改回圓形 */
+            overflow: hidden;
+            border: 3px solid var(--bg-color);
+            box-shadow: 0 8px 20px rgba(140, 157, 163, 0.3),
+                        0 0 0 2px var(--accent-color);
+            opacity: 0;
             transform: scale(0.8);
-            animation: popIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* 彈出動畫 */
-            animation-delay: 0.5s; /* 延遲播放 */
+            animation: popIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.5s;
         }
 
         .profile-img {
             width: 100%;
             height: 100%;
             object-fit: cover; /* 保持比例填滿 */
-            object-position: center top; /* 照片對齊上方，確保頭部完整 */
+            /* 重點修改：object-position
+               設定為 'center 20%' 意思是不對齊正中間，而是對齊上方偏下 20% 的位置。
+               這樣會把照片往上拉，自然就把底部的 20% 裁掉了（被圓框擋住）。
+            */
+            object-position: center 20%; 
         }
 
         @keyframes popIn {
@@ -222,13 +225,13 @@
         <div class="section">
             <h2>關於視野</h2>
             <p>我沒有物慾，卻勇於挑戰。<br>在投資裡精準佈局，在AI浪潮前從容領航。</p>
-            <p>我不追求世界的喧囂，<br>只專注於那些能夠「看見未來」的瞬間。</p>
+            <p>我不追求世界的喧囂，<br>只專注於那些能夠看見未來的瞬間。</p>
         </div>
 
         <div class="section">
             <h2>關於妳我</h2>
             <p>但在這些理性的數據背後，<br>我其實只是一盞，願為妳亮著的<span class="highlight">暖黃色檯燈</span>。</p>
-            <p>我知道最舒服的關係，<br>不是時刻黏膩，而是擁有「共享的靜默」。</p>
+            <p>我知道最舒服的關係，<br>不是時刻黏膩，而是擁有共享的靜默。</p>
             <p>當妳累了，不需要解釋，<br>我就是妳專屬的<span class="highlight">充電站</span>。<br>一個擁抱，電量充滿。</p>
         </div>
 
@@ -241,7 +244,6 @@
     </div>
 
     <script>
-        // 打字機特效
         const text = "你好，這是一份關於我的觀察日誌。";
         const titleElement = document.getElementById('typewriter');
         let index = 0;
@@ -255,12 +257,10 @@
         }
 
         window.onload = () => {
-            // 延遲一點點再開始打字，讓照片先出來
             setTimeout(typeWriter, 800);
             createParticles(); 
         };
 
-        // 滾動偵測
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -273,7 +273,6 @@
             observer.observe(el);
         });
 
-        // 按鈕互動
         function showSecret() {
             const msg = document.getElementById('secret-msg');
             msg.style.display = 'block';
@@ -287,7 +286,6 @@
             }, 50);
         }
 
-        // 產生背景漂浮愛心的函數
         function createParticles() {
             const container = document.getElementById('particle-container');
             const particleCount = 18;
