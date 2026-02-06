@@ -1,294 +1,455 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>關於我 | 一份觀察日誌</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #fff9f0; /* 溫暖的奶油白 */
-            --text-color: #5a4a42; /* 溫暖的深棕色 */
-            --accent-color: #9ab8b3; /* 青澀感的灰綠色 (追人的顏色) */
-            --hover-color: #e8b4b8; /* 可愛粉 (被追的顏色) */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>關於我｜一份觀察日誌</title>
 
-        /* 強制所有元素都使用可愛字體 */
-        * {
-            font-family: 'ZCOOL KuaiLe', cursive !important;
-        }
+  <!-- 字體：保留你原本可愛字體，但加一個更耐看的正文字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 2;
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
+  <style>
+    :root{
+      --bg: #fff9f0;            /* 奶油白 */
+      --card: rgba(255,255,255,.65);
+      --text: #4f3f39;          /* 深棕 */
+      --muted: rgba(79,63,57,.72);
+      --accent: #8fb6b0;        /* 灰綠 */
+      --hover: #e8a9b5;         /* 粉 */
+      --line: rgba(79,63,57,.12);
+      --shadow: 0 18px 45px rgba(79,63,57,.10);
+      --radius: 22px;
+    }
 
-        /* --- 兩個小人 SVG 追逐動畫 --- */
-        .chasing-container {
-            position: fixed;
-            bottom: 15px; /* 稍微提高一點 */
-            left: 0;
-            width: 100%;
-            height: 60px;
-            z-index: -1; /* 放在最底層 */
-            pointer-events: none;
-            overflow: hidden;
-        }
+    * { box-sizing: border-box; }
 
-        /* 移動容器：負責從左跑到右 */
-        .mover {
-            position: absolute;
-            bottom: 0;
-            animation: moveAcross 18s linear infinite;
-        }
+    body{
+      margin:0;
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(232,169,181,.18), transparent 55%),
+        radial-gradient(900px 500px at 85% 15%, rgba(143,182,176,.22), transparent 55%),
+        radial-gradient(1200px 700px at 50% 110%, rgba(143,182,176,.18), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.95;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-        /* 彈跳元素：負責上下蹦跳，裡面的SVG負責顯示圖案 */
-        .bouncer {
-            width: 45px; /* 角色大小 */
-            height: 45px;
-            animation: bounce 0.6s ease-in-out infinite alternate;
-        }
+    /* 版面 */
+    .wrap{
+      width: min(760px, 92vw);
+      margin: 0 auto;
+      padding: 44px 0 80px;
+      position: relative;
+    }
 
-        /* 第一個小人 (被追的 - 粉色) */
-        .mover-1 {
-            left: -60px;
-            /* 延遲一點點開始，錯開位置 */
-             animation-delay: 0s;
-        }
-        .mover-1 .bouncer {
-            fill: var(--hover-color); /* SVG填色 */
-            animation-delay: 0.1s; /* 蹦跳錯開 */
-        }
+    /* 頂部小標籤 */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(79,63,57,.08);
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: .95rem;
+      color: var(--muted);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(143,182,176,.18);
+    }
 
-        /* 第二個小人 (追人的 - 藍綠色) */
-        .mover-2 {
-            left: -140px; /* 起始位置在更後面 */
-            animation-delay: 0.2s;
-        }
-        .mover-2 .bouncer {
-            fill: var(--accent-color); /* SVG填色 */
-            animation-delay: 0.3s;
-        }
+    /* Hero */
+    .hero{
+      margin-top: 18px;
+      padding: 28px 18px 18px;
+      text-align: center;
+    }
 
-        /* 橫向移動動畫 */
-        @keyframes moveAcross {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(110vw); } /* 跑到螢幕外 */
-        }
+    h1{
+      margin: 14px 0 12px;
+      font-family: "ZCOOL KuaiLe", cursive;
+      font-weight: 400;
+      font-size: clamp(2.1rem, 4.4vw, 3.0rem);
+      letter-spacing: .5px;
+      min-height: 3.2em; /* 打字機不跳動 */
+    }
 
-        /* 上下蹦跳動畫 */
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-12px); } /* 向上跳12px */
-        }
-        /* ----------------------- */
+    .subtitle{
+      margin: 0 auto;
+      max-width: 46ch;
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-        }
+    /* 卡片區 */
+    .card{
+      margin-top: 28px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
 
-        .hero {
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+    .grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: normal;
-            margin-bottom: 20px;
-            min-height: 80px;
-            color: var(--text-color);
-        }
+    /* section（滾動出現） */
+    .section{
+      padding: 20px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(79,63,57,.10);
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 10px 24px rgba(79,63,57,.06);
+      transform: translateY(18px);
+      opacity: 0;
+      transition: transform .85s cubic-bezier(.22,.75,.23,1), opacity .85s ease;
+    }
+    .section.visible{
+      transform: translateY(0);
+      opacity: 1;
+    }
 
-        .section {
-            margin: 70px 0;
-            opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
+    h2{
+      margin: 0 0 10px;
+      font-family: "ZCOOL KuaiLe", cursive;
+      font-weight: 400;
+      font-size: 1.55rem;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .h2line{
+      width: 28px;
+      height: 3px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), rgba(232,169,181,.95));
+      opacity: .85;
+    }
 
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+    p{
+      margin: 10px 0 0;
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.05rem;
+    }
+    .quote{
+      margin-top: 14px;
+      padding: 14px 14px;
+      border-left: 4px solid rgba(232,169,181,.75);
+      background: rgba(232,169,181,.10);
+      border-radius: 14px;
+      color: rgba(79,63,57,.86);
+    }
 
-        h2 {
-            font-size: 1.6rem;
-            color: var(--accent-color);
-            display: inline-block;
-            margin-bottom: 25px;
-            position: relative;
-            cursor: default;
-            transition: color 0.3s ease;
-        }
+    /* 小亮點列表 */
+    .list{
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: rgba(79,63,57,.84);
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.02rem;
+    }
+    .list li{ margin: 6px 0; }
 
-        h2:hover {
-            color: var(--hover-color);
-            animation: wobble 0.6s ease-in-out;
-        }
+    /* 互動區 */
+    .cta{
+      margin-top: 22px;
+      text-align: center;
+      padding: 16px 10px 8px;
+    }
 
-        @keyframes wobble {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-3deg); }
-            75% { transform: rotate(3deg); }
-        }
+    .btnrow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 12px;
+    }
 
-        h2::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--accent-color);
-            margin-top: 5px;
-            border-radius: 2px;
-            opacity: 0.5;
-        }
+    .btn{
+      border: 1.8px solid rgba(143,182,176,.85);
+      background: rgba(255,255,255,.55);
+      color: rgba(82,68,62,.90);
+      padding: 12px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+      box-shadow: 0 10px 20px rgba(79,63,57,.08);
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.02rem;
+      user-select: none;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      background: rgba(143,182,176,.18);
+      border-color: rgba(143,182,176,1);
+      box-shadow: 0 14px 28px rgba(143,182,176,.22);
+    }
+    .btn.primary{
+      background: rgba(143,182,176,.92);
+      border-color: rgba(143,182,176,1);
+      color: #fff;
+    }
+    .btn.primary:hover{
+      background: rgba(143,182,176,1);
+      box-shadow: 0 18px 34px rgba(143,182,176,.35);
+    }
 
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 18px;
-        }
+    .secret{
+      margin-top: 14px;
+      display:none;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px dashed rgba(232,169,181,.55);
+      background: rgba(232,169,181,.10);
+      color: rgba(79,63,57,.88);
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: all .5s ease;
+    }
+    .secret.show{
+      display:block;
+      transform: translateY(0);
+      opacity: 1;
+    }
 
-        .btn-box {
-            text-align: center;
-            margin-top: 60px;
-        }
+    /* 追逐小人：更細 + 不打擾 */
+    .chase{
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      height: 62px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .55;
+      filter: saturate(1.1);
+    }
+    .char{
+      position:absolute;
+      bottom:0;
+      width: 34px;
+      height: 52px;
+      animation: run 18s linear infinite;
+    }
+    .char::before{
+      content:"";
+      position:absolute;
+      top:0; left:50%;
+      transform: translateX(-50%);
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--hover);
+      box-shadow: 0 8px 16px rgba(232,169,181,.25);
+    }
+    .char::after{
+      content:"";
+      position:absolute;
+      bottom:0; left:50%;
+      transform: translateX(-50%);
+      width: 28px; height: 32px;
+      border-radius: 18px 18px 10px 10px;
+      background: var(--hover);
+      box-shadow: 0 8px 16px rgba(232,169,181,.18);
+    }
+    .char.two{
+      animation-delay: .65s;
+      opacity: .95;
+    }
+    .char.two::before,
+    .char.two::after{
+      background: var(--accent);
+      box-shadow: 0 8px 16px rgba(143,182,176,.18);
+    }
+    @keyframes run{
+      0%   { transform: translateX(-80px); }
+      100% { transform: translateX(110vw); }
+    }
 
-        .magic-btn {
-            background-color: var(--bg-color);
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 12px 28px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
+    /* 底部小字 */
+    .foot{
+      margin-top: 18px;
+      text-align:center;
+      color: rgba(79,63,57,.58);
+      font-family: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: .92rem;
+    }
 
-        .magic-btn:hover {
-            background-color: var(--accent-color);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(154, 184, 179, 0.3);
-        }
-        
-        .magic-btn:active {
-            transform: translateY(-1px);
-        }
-        
-        #secret-msg {
-            margin-top: 25px;
-            color: var(--hover-color);
-            font-size: 1rem;
-            display: none;
-            font-weight: bold;
-        }
-    </style>
+    /* 手機優化 */
+    @media (max-width: 520px){
+      .wrap{ padding-top: 28px; }
+      .card{ padding: 18px 14px; }
+      .section{ padding: 18px 14px; }
+      .btn{ width: 100%; max-width: 340px; }
+    }
+
+    /* 降低動態偏好：自動關掉動畫 */
+    @media (prefers-reduced-motion: reduce){
+      .char{ animation: none; }
+      .section{ transition: none; transform:none; opacity:1; }
+      h1{ min-height: auto; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="chasing-container">
-        <div class="mover mover-1">
-            <svg class="bouncer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C13.6569 2 15 3.34315 15 5C15 6.65685 13.6569 8 12 8C10.3431 8 9 6.65685 9 5C9 3.34315 10.3431 2 12 2ZM12 10C15.9706 10 19.2379 12.8638 19.8941 16.637L20.1115 18H16.8001C16.3431 20.3157 14.378 22 12 22C9.62202 22 7.65687 20.3157 7.19992 18H3.88853L4.10593 16.637C4.76212 12.8638 8.02944 10 12 10Z"/>
-            </svg>
-        </div>
-        <div class="mover mover-2">
-            <svg class="bouncer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.5 6C7.5 8.48528 9.51472 10.5 12 10.5C14.4853 10.5 16.5 8.48528 16.5 6C16.5 3.51472 14.4853 1.5 12 1.5C9.51472 1.5 7.5 3.51472 7.5 6ZM19.799 18.3934L20.8437 20.4828C21.1865 21.1685 20.9085 22.002 20.2228 22.3448C20.0318 22.4403 19.8211 22.4913 19.6075 22.4956L4.33474 22.4999C3.56817 22.5001 2.94652 21.8787 2.94631 21.1122C2.9463 20.9018 2.99628 20.6943 3.09099 20.5048L4.08529 18.5162C4.76087 15.0539 7.81301 12.5 11.3451 12.5H12.608C16.1656 12.5 19.233 15.0907 19.799 18.3934Z"/>
-            </svg>
-        </div>
+  <div class="chase" aria-hidden="true">
+    <div class="char one"></div>
+    <div class="char two"></div>
+  </div>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="pill"><span class="dot"></span><span>一份不太吵、但很認真的自我介紹</span></div>
+      <h1 id="typewriter" aria-label="打字標題"></h1>
+      <p class="subtitle">
+        我不擅長把自己寫得很完美，但我擅長把「相處」這件事，做得很舒服。
+      </p>
     </div>
 
-    <div class="container">
-        <div class="hero">
-            <h1 id="typewriter"></h1>
+    <section class="card" aria-label="內容卡片">
+      <div class="grid">
+        <div class="section">
+          <h2><span class="h2line"></span>關於性格</h2>
+          <p>理性是我的外殼，溫柔是我保留的本能。</p>
+          <p class="quote">我習慣把事情做得可靠：工作上講邏輯、講細節；生活裡更在意情緒被好好接住。</p>
+          <ul class="list">
+            <li>遇到重要的人，我會慢一點，但會更認真。</li>
+            <li>我喜歡把承諾說小一點，把做到的部分做大一點。</li>
+          </ul>
         </div>
 
         <div class="section">
-            <h2>關於性格</h2>
-            <p>理性的外殼，感性的靈魂。</p>
-            <p>我是一個習慣與「光」相處的人。在工作中，我追求精準的數據；但在生活裡，我更迷戀那些無法被計算的瞬間。</p>
-            <p>我可能不是那個永遠衝第一的火球，而是一盞願意在妳身後亮著的暖黃色檯燈。</p>
+          <h2><span class="h2line"></span>關於相處</h2>
+          <p>我覺得最舒服的關係，是有各自的生活，也能共享同一段安靜。</p>
+          <p class="quote">妳不用一直找話題，我也不會用沉默讓人不安。只要妳在，我就會在。</p>
+          <ul class="list">
+            <li>妳累的時候，不用解釋，我先抱一下再說。</li>
+            <li>妳想說我就聽；妳不想說，我也不逼妳。</li>
+          </ul>
         </div>
 
         <div class="section">
-            <h2>關於相處</h2>
-            <p>我知道人與人之間最舒服的關係，不是時刻黏膩，而是擁有「共享的靜默」。</p>
-            <p>當妳覺得累的時候，不需要解釋為什麼，只要一個眼神，我就會給妳一個充滿電量的擁抱。</p>
+          <h2><span class="h2line"></span>關於生活</h2>
+          <p>我不追求浮誇，但我會把日常過得有質感。</p>
+          <p class="quote">喜歡乾淨的房間、舒服的光線、和能把心放下來的人。</p>
+          <ul class="list">
+            <li>吃飯不求昂貴，但在乎「一起吃」的心情。</li>
+            <li>旅行不求打卡，但在乎「一起記得」的片段。</li>
+          </ul>
         </div>
 
         <div class="section">
-            <h2>關於生活</h2>
-            <p>我不追求奢華，但我對細節講究。</p>
-            <p>我們像兩棵並排的樹，根在底下交織，葉子在風中輕輕觸碰，既親密又自由。</p>
+          <h2><span class="h2line"></span>如果妳願意</h2>
+          <p>我想把這份日誌，寫成「我們」的版本。</p>
+          <p class="quote">妳可以很做自己，我會很認真地喜歡。</p>
+
+          <div class="cta">
+            <div class="btnrow">
+              <button class="btn primary" id="btnSecret">點一下：我的小缺點</button>
+              <button class="btn" id="btnCopy">複製一句話（拿去聊天用）</button>
+            </div>
+
+            <div class="secret" id="secretMsg" role="status" aria-live="polite"></div>
+
+            <p class="foot" id="footnote">（小提醒：越自然越有魅力，別急著一次丟太多。）</p>
+          </div>
         </div>
+      </div>
+    </section>
+  </main>
 
-        <div class="container btn-box">
-            <button class="magic-btn" onclick="showSecret()">點擊查看我的缺點</button>
-            <p id="secret-msg">缺點就是... 遇到妳，我會變得有點緊張 (///▽///)</p>
-        </div>
-        
-        <div style="height: 100px;"></div>
-    </div>
+  <script>
+    // 打字機：更順、更像「真的在寫」
+    const lines = [
+      "你好，這是一份關於我的觀察日誌。",
+      "如果妳剛好也想認識一個不吵、但很認真的人——",
+      "那我們可以從今天開始。"
+    ];
 
-    <script>
-        // 打字機特效
-        const text = "你好，這是一份關於我的觀察日誌。";
-        const titleElement = document.getElementById('typewriter');
-        let index = 0;
+    const el = document.getElementById("typewriter");
+    let line = 0, i = 0;
 
-        function typeWriter() {
-            if (index < text.length) {
-                titleElement.innerHTML += text.charAt(index);
-                index++;
-                setTimeout(typeWriter, 150);
-            }
-        }
+    function typeLine() {
+      if (line >= lines.length) return;
+      const current = lines[line];
 
-        window.onload = () => {
-            typeWriter();
-        };
+      if (i < current.length) {
+        el.innerHTML += current.charAt(i);
+        i++;
+        setTimeout(typeLine, 55 + Math.random() * 55);
+      } else {
+        el.innerHTML += "<br>";
+        line++;
+        i = 0;
+        setTimeout(typeLine, 420);
+      }
+    }
+    window.addEventListener("load", typeLine);
 
-        // 滾動偵測
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15 });
+    // 滾動顯示
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("visible");
+      });
+    }, { threshold: 0.14 });
 
-        document.querySelectorAll('.section').forEach((el) => {
-            observer.observe(el);
-        });
+    document.querySelectorAll(".section").forEach(s => observer.observe(s));
 
-        // 按鈕互動
-        function showSecret() {
-            const msg = document.getElementById('secret-msg');
-            msg.style.display = 'block';
-            msg.style.opacity = 0;
-            msg.style.transform = 'translateY(20px)';
-            msg.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                msg.style.opacity = 1;
-                msg.style.transform = 'translateY(0)';
-            }, 50);
-        }
-    </script>
+    // 小缺點：更撩但不尷尬（避免過甜）
+    const secretMsg = document.getElementById("secretMsg");
+    const secrets = [
+      "缺點：對喜歡的人會比較慢熱，但一旦認定，就很難敷衍。",
+      "缺點：我會記得妳說過的小事，然後在妳不注意的時候，默默照顧到。",
+      "缺點：妳如果太可愛，我可能會不小心笑出來（但我會裝鎮定）。"
+    ];
+
+    document.getElementById("btnSecret").addEventListener("click", () => {
+      const pick = secrets[Math.floor(Math.random() * secrets.length)];
+      secretMsg.textContent = pick;
+      secretMsg.classList.add("show");
+    });
+
+    // 複製一句話：給你直接拿去聊天開場
+    const chatLines = [
+      "我不是很會甜言蜜語，但我挺會把相處變舒服的。",
+      "我想用最自然的方式認識妳：不急、不吵、但很認真。",
+      "如果今天只能做一件小事，那我想先好好跟妳打個招呼。"
+    ];
+
+    document.getElementById("btnCopy").addEventListener("click", async () => {
+      const pick = chatLines[Math.floor(Math.random() * chatLines.length)];
+      try {
+        await navigator.clipboard.writeText(pick);
+        const old = secretMsg.textContent;
+        secretMsg.textContent = "✅ 已複製： " + pick;
+        secretMsg.classList.add("show");
+        setTimeout(() => { secretMsg.textContent = old || "（已複製到剪貼簿）"; }, 2200);
+      } catch (e) {
+        // 如果瀏覽器不給 clipboard，就顯示在畫面讓你手動複製
+        secretMsg.textContent = "複製失敗，但你可以手動複製這句： " + pick;
+        secretMsg.classList.add("show");
+      }
+    });
+  </script>
 </body>
 </html>
