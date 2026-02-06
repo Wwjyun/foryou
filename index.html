@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於我 | 一份觀察日誌</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fff9f0; /* 溫暖的奶油白 */
-            --text-color: #5a4a42; /* 溫暖的深棕色 */
-            --accent-color: #9ab8b3; /* 青澀感的灰綠色 */
-            --hover-color: #e8b4b8; /* 可愛粉 (愛心的顏色) */
+            --bg-color: #fdfbf7; /* 改回更乾淨的米白色，配合宋體 */
+            --text-color: #4a4a4a; /* 深灰，比純黑更有質感 */
+            --accent-color: #8c9da3; /* 莫蘭迪藍灰，成熟穩重 */
+            --hover-color: #d68c8c; /* 藕粉色，比亮粉紅更耐看 */
         }
 
-        /* 強制所有元素都使用新的手寫字體 */
+        /* 強制使用思源宋體 */
         * {
-            font-family: 'ZCOOL XiaoWei', serif !important;
+            font-family: 'Noto Serif TC', serif !important;
         }
 
         body {
@@ -23,7 +23,8 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            line-height: 2;
+            line-height: 2.2; /* 行距再拉大一點，更有雜誌感 */
+            letter-spacing: 0.05em; /* 字距微調，增加透氣感 */
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
@@ -36,7 +37,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* 放在最底層 */
+            z-index: -1;
             pointer-events: none;
             overflow: hidden;
         }
@@ -44,10 +45,9 @@
         .particle {
             position: absolute;
             bottom: -30px;
-            color: var(--hover-color); /* 愛心顏色設定為粉色 */
+            color: var(--hover-color);
             opacity: 0;
-            /* 使用文字 '❤'，所以不需要 border-radius */
-            font-size: 20px; /* 預設大小，JS會隨機改變 */
+            font-size: 20px;
             animation: floatUp linear infinite;
         }
 
@@ -56,10 +56,10 @@
                 transform: translateY(0) scale(0.5) rotate(0deg); 
                 opacity: 0; 
             }
-            10% { opacity: 0.6; } /* 稍微透明一點比較不搶戲 */
-            80% { opacity: 0.6; }
+            10% { opacity: 0.25; } /* 透明度改為 0.25 (非常淡) */
+            80% { opacity: 0.25; } /* 維持淡淡的 */
             100% { 
-                transform: translateY(-110vh) scale(1.1) rotate(360deg); /* 往上飄的同時慢慢旋轉 */
+                transform: translateY(-110vh) scale(1.1) rotate(360deg);
                 opacity: 0; 
             }
         }
@@ -82,96 +82,93 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: normal;
+            font-size: 2.2rem; /* 稍微縮小一點點，更精緻 */
+            font-weight: 500; /* 標題稍微粗一點點 */
             margin-bottom: 20px;
             min-height: 80px;
             color: var(--text-color);
+            letter-spacing: 0.1em;
         }
 
         .section {
-            margin: 70px 0;
+            margin: 80px 0; /* 間距拉大 */
             opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(40px); /* 移除縮放效果，只保留上移，比較成熟 */
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 動畫時間拉長，更優雅 */
         }
 
         .section.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
         h2 {
-            font-size: 1.6rem;
+            font-size: 1.3rem; /* 標題不需要太大 */
             color: var(--accent-color);
             display: inline-block;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             position: relative;
             cursor: default;
+            font-weight: 500;
             transition: color 0.3s ease;
         }
 
         h2:hover {
             color: var(--hover-color);
-            animation: wobble 0.6s ease-in-out;
-        }
-
-        @keyframes wobble {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-3deg); }
-            75% { transform: rotate(3deg); }
+            /* 移除搖晃動畫，成熟風格不需要扭來扭去 */
         }
 
         h2::after {
             content: '';
             display: block;
-            width: 100%;
-            height: 3px;
+            width: 40px; /* 線條變短，更極簡 */
+            height: 1px; /* 線條變細 */
             background-color: var(--accent-color);
-            margin-top: 5px;
-            border-radius: 2px;
-            opacity: 0.5;
+            margin-top: 10px;
+            opacity: 0.6;
         }
 
         p {
-            font-size: 1.2rem; /* 新字體稍微大一點點比較好看 */
-            margin-bottom: 18px;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            font-weight: 300; /* 使用細體 */
         }
 
         .btn-box {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 80px;
         }
 
         .magic-btn {
-            background-color: var(--bg-color);
-            border: 2px solid var(--accent-color);
+            background-color: transparent; /* 背景透明 */
+            border: 1px solid var(--accent-color); /* 線條變細 */
             color: var(--accent-color);
-            padding: 12px 28px;
-            border-radius: 30px;
+            padding: 12px 35px; /* 按鈕變長一點 */
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 1rem;
+            transition: all 0.5s ease;
+            letter-spacing: 0.1em;
         }
 
         .magic-btn:hover {
             background-color: var(--accent-color);
             color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(154, 184, 179, 0.3);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(140, 157, 163, 0.2);
         }
         
         .magic-btn:active {
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
         
         #secret-msg {
-            margin-top: 25px;
+            margin-top: 30px;
             color: var(--hover-color);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             display: none;
-            font-weight: bold;
+            letter-spacing: 0.05em;
         }
     </style>
 </head>
@@ -186,26 +183,25 @@
         <div class="section">
             <h2>關於性格</h2>
             <p>理性的外殼，感性的靈魂。</p>
-            <p>我是一個習慣與「光」相處的人。在工作中，我追求精準的數據；但在生活裡，我更迷戀那些無法被計算的瞬間。</p>
-            <p>我可能不是那個永遠衝第一的火球，而是一盞願意在妳身後亮著的暖黃色檯燈。</p>
+            <p>我是一個習慣與光相處的人。<br>在工作中，我追求精準的數據；<br>但在生活裡，我更迷戀那些無法被計算的瞬間。</p>
+            <p>我可能不是那個永遠衝第一的火球，<br>而是一盞願意在妳身後亮著的暖黃色檯燈。</p>
         </div>
 
         <div class="section">
             <h2>關於相處</h2>
-            <p>我知道人與人之間最舒服的關係，不是時刻黏膩，而是擁有「共享的靜默」。</p>
-            <p>當妳覺得累的時候，不需要解釋為什麼，只要一個眼神，我就會給妳一個充滿電量的擁抱。</p>
+            <p>我知道人與人之間最舒服的關係，<br>不是時刻黏膩，而是擁有共享的靜默。</p>
+            <p>當妳覺得累的時候，不需要解釋為什麼，<br>只要一個眼神，我就會給妳一個充滿電量的擁抱。</p>
         </div>
 
         <div class="section">
             <h2>關於生活</h2>
             <p>我不追求奢華，但我對細節講究。</p>
-            <p>我們像兩棵並排的樹，根在底下交織，葉子在風中輕輕觸碰，既親密又自由。</p>
+            <p>我希望我們以後可以像兩棵並排的樹，根在底下交織，<br>葉子在風中輕輕觸碰，既親密又自由。</p>
         </div>
 
         <div class="container btn-box">
             <button class="magic-btn" onclick="showSecret()">點擊查看我的缺點</button>
-            <p id="secret-msg">缺點就是... 遇到妳，我會變得有點緊張 (///▽///)</p>
-        </div>
+            <p id="secret-msg">缺點就是... 遇到妳，我會變得有點緊張。</p> </div>
         
         <div style="height: 100px;"></div>
     </div>
@@ -226,7 +222,7 @@
 
         window.onload = () => {
             typeWriter();
-            createParticles(); // 啟動背景愛心動畫
+            createParticles(); 
         };
 
         // 滾動偵測
@@ -236,7 +232,7 @@
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.1 });
 
         document.querySelectorAll('.section').forEach((el) => {
             observer.observe(el);
@@ -247,8 +243,8 @@
             const msg = document.getElementById('secret-msg');
             msg.style.display = 'block';
             msg.style.opacity = 0;
-            msg.style.transform = 'translateY(20px)';
-            msg.style.transition = 'all 0.5s ease';
+            msg.style.transform = 'translateY(10px)';
+            msg.style.transition = 'all 0.8s ease'; // 顯示得更慢更優雅
             
             setTimeout(() => {
                 msg.style.opacity = 1;
@@ -259,23 +255,21 @@
         // 產生背景漂浮愛心的函數
         function createParticles() {
             const container = document.getElementById('particle-container');
-            const particleCount = 20; // 愛心數量
+            const particleCount = 18; // 數量稍微減少，畫面更乾淨
 
             for (let i = 0; i < particleCount; i++) {
                 let particle = document.createElement('div');
                 particle.classList.add('particle');
-                particle.innerText = '❤'; // 設定內容為愛心符號
+                particle.innerText = '❤'; 
                 
-                // 隨機位置
                 particle.style.left = Math.random() * 100 + 'vw';
                 
-                // 隨機大小 (透過字體大小控制)
-                let fontSize = Math.random() * 15 + 12 + 'px'; // 12px 到 27px 之間
+                // 大小稍微縮小一點
+                let fontSize = Math.random() * 12 + 10 + 'px'; 
                 particle.style.fontSize = fontSize;
 
-                // 隨機動畫時間與延遲
                 particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.animationDuration = Math.random() * 15 + 15 + 's'; // 讓愛心飄慢一點，比較浪漫
+                particle.style.animationDuration = Math.random() * 15 + 15 + 's'; 
 
                 container.appendChild(particle);
             }
