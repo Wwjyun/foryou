@@ -4,33 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於我 | 一份觀察日誌</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fdfbf7; /* 溫暖的米白色 */
-            --text-color: #4a4a4a; /* 深灰，不刺眼 */
-            --accent-color: #8c9da3; /* 莫蘭迪藍灰 */
+            --bg-color: #fff9f0; /* 更暖一點的奶油白 */
+            --text-color: #5a4a42; /* 溫暖的深棕色 */
+            --accent-color: #9ab8b3; /* 青澀感的灰綠色 */
+            --hover-color: #e8b4b8; /* 可愛粉 */
         }
 
         body {
-            font-family: 'Noto Serif TC', serif;
+            /* 改用可愛字體 */
+            font-family: 'ZCOOL KuaiLe', cursive;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            line-height: 1.8;
+            line-height: 2; /* 字距加大一點更可愛 */
             overflow-x: hidden;
         }
+
+        /* --- 背景漂浮動畫區 --- */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 放在最底層 */
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            bottom: -50px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 0.3; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+        }
+        /* ----------------------- */
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 40px 20px;
+            position: relative;
         }
 
-        /* 第一屏：打字機區 */
         .hero {
-            height: 80vh;
+            height: 70vh; /* 稍微調低一點 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,83 +69,110 @@
         }
 
         h1 {
-            font-size: 2rem;
-            font-weight: 500;
+            font-size: 2.5rem; /* 字體加大 */
+            font-weight: normal;
             margin-bottom: 20px;
-            min-height: 60px; /* 預留高度 */
+            min-height: 80px;
+            color: var(--text-color);
         }
 
-        .subtitle {
-            font-size: 1rem;
-            color: var(--accent-color);
-            opacity: 0; /* 一開始隱藏 */
-            transition: opacity 2s ease;
-        }
+        /* 副標題樣式已移除 */
 
-        /* 內容區塊動畫 */
         .section {
-            margin: 60px 0;
+            margin: 70px 0;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s ease;
+            transform: translateY(40px) scale(0.98); /* 增加一點縮放效果 */
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 更有彈性的動畫 */
         }
 
         .section.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         h2 {
-            font-size: 1.2rem;
-            border-bottom: 1px solid var(--accent-color);
+            font-size: 1.6rem;
+            color: var(--accent-color);
             display: inline-block;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            cursor: default;
+            transition: color 0.3s ease;
+        }
+
+        /* 標題滑鼠互動：可愛晃動 */
+        h2:hover {
+            color: var(--hover-color);
+            animation: wobble 0.6s ease-in-out;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-3deg); }
+            75% { transform: rotate(3deg); }
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin-top: 5px;
+            border-radius: 2px;
+            opacity: 0.5;
         }
 
         p {
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
         }
 
-        /* 互動按鈕 */
         .btn-box {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 60px;
         }
 
         .magic-btn {
-            background-color: transparent;
-            border: 1px solid var(--accent-color);
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 28px;
+            border-radius: 30px; /* 更圓 */
             cursor: pointer;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .magic-btn:hover {
             background-color: var(--accent-color);
             color: white;
+            transform: translateY(-3px); /* 懸浮感 */
+            box-shadow: 0 6px 12px rgba(154, 184, 179, 0.3);
+        }
+        
+        .magic-btn:active {
+            transform: translateY(-1px);
         }
         
         #secret-msg {
-            margin-top: 15px;
-            color: #d68c8c; /* 淡粉紅 */
-            font-size: 0.9rem;
+            margin-top: 25px;
+            color: var(--hover-color);
+            font-size: 1rem;
             display: none;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
+    <div class="particle-container" id="particle-container"></div>
 
     <div class="container">
         <div class="hero">
             <h1 id="typewriter"></h1>
-            <div class="subtitle" id="subtitle">—— 光影採集者</div>
-        </div>
+            </div>
 
         <div class="section">
             <h2>關於性格</h2>
@@ -138,13 +195,13 @@
 
         <div class="container btn-box">
             <button class="magic-btn" onclick="showSecret()">點擊查看我的缺點</button>
-            <p id="secret-msg">缺點就是... 遇到妳，我會變得有點緊張。</p>
-        </div>
+            <p id="secret-msg">缺點就是... 遇到妳，我會變得有點緊張 (///▽///)</p> </div>
         
-        <div style="height: 50px;"></div> </div>
+        <div style="height: 80px;"></div>
+    </div>
 
     <script>
-        // 打字機特效
+        // 打字機特效 (移除副標題相關代碼)
         const text = "你好，這是一份關於我的觀察日誌。";
         const titleElement = document.getElementById('typewriter');
         let index = 0;
@@ -153,24 +210,23 @@
             if (index < text.length) {
                 titleElement.innerHTML += text.charAt(index);
                 index++;
-                setTimeout(typeWriter, 100); // 打字速度
-            } else {
-                // 打字結束後顯示副標題
-                document.getElementById('subtitle').style.opacity = 1;
+                setTimeout(typeWriter, 150); // 打字稍微慢一點點更可愛
             }
         }
 
-        // 啟動打字機
-        window.onload = typeWriter;
+        window.onload = () => {
+            typeWriter();
+            createParticles(); // 啟動背景動畫
+        };
 
-        // 滾動偵測 (Intersection Observer)
+        // 滾動偵測
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.15 });
 
         document.querySelectorAll('.section').forEach((el) => {
             observer.observe(el);
@@ -181,15 +237,34 @@
             const msg = document.getElementById('secret-msg');
             msg.style.display = 'block';
             msg.style.opacity = 0;
-            let op = 0;
-            let timer = setInterval(function () {
-                if (op >= 1){
-                    clearInterval(timer);
-                }
-                msg.style.opacity = op;
-                msg.style.filter = 'alpha(opacity=' + op * 100 + ")";
-                op += 0.1;
+            msg.style.transform = 'translateY(20px)';
+            msg.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                msg.style.opacity = 1;
+                msg.style.transform = 'translateY(0)';
             }, 50);
+        }
+
+        // 產生背景漂浮泡泡的函數
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            const particleCount = 15; // 泡泡數量
+
+            for (let i = 0; i < particleCount; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 隨機大小、位置和動畫延遲
+                let size = Math.random() * 20 + 10 + 'px';
+                particle.style.width = size;
+                particle.style.height = size;
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's'; // 10-20秒
+
+                container.appendChild(particle);
+            }
         }
     </script>
 </body>
